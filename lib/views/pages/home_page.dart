@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shooppyy/models/product_model.dart';
 import 'package:shooppyy/utilities/app_assets.dart';
+import 'package:shooppyy/views/widgets/list_item_home.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -34,7 +36,10 @@ class HomePage extends StatelessWidget {
         ),
         Text(
           description,
-          style: Theme.of(context).textTheme.titleSmall,
+          style: Theme.of(context)
+              .textTheme
+              .titleSmall
+              ?.copyWith(color: Colors.grey),
         )
       ],
     );
@@ -43,48 +48,79 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Column(
-      children: [
-        Stack(
-          alignment: Alignment.bottomLeft,
-          children: [
-            Image.network(
-              AppAssets.topBannerHomePageImage,
-              fit: BoxFit.cover,
-              height: size.height * 0.3,
-            ),
-            Opacity(
-              opacity: 0.35,
-              child: Container(
-                width: double.infinity,
-                height: size.height * 0.3,
-                color: Colors.black,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-              child: Text(
-                'Street Clothes',
-                style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                    color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 26),
-        Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Stack(
+            alignment: Alignment.bottomLeft,
             children: [
-              buildHeaderOfList(
-                context,
-                title: 'Sale',
-                description: 'Super Summer Sales!',
+              Image.network(
+                AppAssets.topBannerHomePageImage,
+                fit: BoxFit.cover,
+                height: size.height * 0.3,
+              ),
+              Opacity(
+                opacity: 0.35,
+                child: Container(
+                  width: double.infinity,
+                  height: size.height * 0.3,
+                  color: Colors.black,
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                child: Text(
+                  'Street Clothes',
+                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),
-        ),
-      ],
+          SizedBox(height: 26),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: [
+                buildHeaderOfList(
+                  context,
+                  title: 'Sale',
+                  description: 'Super Summer Sales!',
+                ),
+                SizedBox(
+                  height: 300,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: dumProducts
+                        .map((e) => ListItemHome(
+                              product: e,
+                            ))
+                        .toList(),
+                  ),
+                ),
+                buildHeaderOfList(
+                  context,
+                  title: 'New',
+                  description: 'Super New Products!',
+                ),
+                SizedBox(
+                  height: 300,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: dumProducts
+                        .map((e) => ListItemHome(
+                              product: e,
+                            ))
+                        .toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+        ],
+      ),
     );
   }
 }
