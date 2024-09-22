@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "988807991977",
+    "project_id": "shooppyy-ecefd",
+    "storage_bucket": "shooppyy-ecefd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:988807991977:android:3f8cfafa7b2ccdfb5f0fb8",
+        "android_client_info": {
+          "package_name": "com.example.shooppyy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeQzXbkwIKSZuiQG2YYCeC9GtWLyxMtec"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
