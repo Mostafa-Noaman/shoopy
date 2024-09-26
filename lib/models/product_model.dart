@@ -18,6 +18,30 @@ class ProductModel {
     this.category = 'other',
     this.rating,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'price': price,
+      'imgUrl': imageUrl,
+      'discountValue': discount,
+      'category': category,
+      'rate': rating,
+    };
+  }
+
+  factory ProductModel.fromMap(Map<String, dynamic> map, String documentId) {
+    return ProductModel(
+      id: documentId,
+      title: map['title'] as String,
+      price: map['price'] as int,
+      imageUrl: map['imgUrl'] as String,
+      discount: map['discountValue'] as int,
+      category: map['category'] as String,
+      rating: map['rate'] as double,
+    );
+  }
 }
 
 List<ProductModel> dumProducts = [
