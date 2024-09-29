@@ -7,7 +7,7 @@ class ProductModel {
   final String imageUrl;
   final int? discount;
   final String category;
-  final double? rating;
+  final int? rating;
 
   ProductModel({
     required this.id,
@@ -39,7 +39,7 @@ class ProductModel {
       imageUrl: map['imgUrl'] as String,
       discount: map['discountValue'] as int,
       category: map['category'] as String,
-      rating: map['rate'] as double,
+      rating: map['rate'] as int,
     );
   }
 }
