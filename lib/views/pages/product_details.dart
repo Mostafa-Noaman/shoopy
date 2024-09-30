@@ -1,20 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shooppyy/controllers/database_controller.dart';
+import 'package:shooppyy/models/cart_model.dart';
 import 'package:shooppyy/models/product_model.dart';
 import 'package:shooppyy/views/widgets/drop_down_menu.dart';
 import 'package:shooppyy/views/widgets/main_button.dart';
+import 'package:shooppyy/views/widgets/main_dialog.dart';
 
-class ProductDetails extends StatelessWidget {
+import '../../utilities/constants.dart';
+
+class ProductDetails extends StatefulWidget {
   const ProductDetails({super.key, required this.product});
 
   final ProductModel product;
 
   @override
+  State<ProductDetails> createState() => _ProductDetailsState();
+}
+
+class _ProductDetailsState extends State<ProductDetails> {
+  bool isFavorite = false;
+  late String dropDownValue;
+
+  Future<void> addToCart(Database database) async {
+    try {
+      final cartProduct = CartModel(
+          id: documentIdFromLocalData(),
+          productId: widget.product.id,
+          title: widget.product.title,
+          price: widget.product.price,
+          imageUrl: widget.product.imageUrl,
+          size: dropDownValue);
+      debugPrint(cartProduct.toMap().toString());
+      await database.addToCart(cartProduct);
+    } catch (e) {
+      return MainDialog(context: context, title: 'Error', content: e.toString())
+          .showAlertDialog();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final database = Provider.of<Database>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(product.title),
+        title: Text(widget.product.title),
         actions: [
           IconButton(
               onPressed: () {},
@@ -27,7 +59,7 @@ class ProductDetails extends StatelessWidget {
         child: Column(
           children: [
             Image.network(
-              product.imageUrl,
+              widget.product.imageUrl,
               width: double.infinity,
               height: size.height * 0.5,
               fit: BoxFit.cover,
@@ -43,26 +75,36 @@ class ProductDetails extends StatelessWidget {
                     children: [
                       Expanded(
                         child: DropDownMenu(
-                          items: ['S', 'M', 'L', 'XL', 'XXL'],
+                          items: const ['S', 'M', 'L', 'XL', 'XXL'],
                           hint: 'Size',
-                          onSaved: (value) {},
+                          onChanged: (value) {
+                            setState(() {
+                              dropDownValue = value!;
+                            });
+                          },
                         ),
                       ),
                       const Spacer(),
                       InkWell(
-                        onTap: () {},
-                        child: const SizedBox(
+                        onTap: () {
+                          setState(() {
+                            isFavorite != isFavorite;
+                          });
+                        },
+                        child: SizedBox(
                           height: 60,
                           width: 60,
                           child: DecoratedBox(
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: Colors.white,
                             ),
                             child: Padding(
-                              padding: EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(8),
                               child: Icon(
-                                Icons.favorite_border_rounded,
+                                isFavorite
+                                    ? Icons.favorite
+                                    : Icons.favorite_outline_rounded,
                                 size: 35,
                               ),
                             ),
@@ -76,18 +118,18 @@ class ProductDetails extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        product.title,
+                        widget.product.title,
                         style: Theme.of(context).textTheme.displaySmall,
                       ),
                       Text(
-                        '\$${product.price}',
+                        '\$${widget.product.price}',
                         style: Theme.of(context).textTheme.titleLarge,
                       )
                     ],
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    product.category,
+                    widget.product.category,
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge!
@@ -99,7 +141,11 @@ class ProductDetails extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 24),
-                  MainButton(text: 'Add to cart', onTap: () {}),
+                  MainButton(
+                      text: 'Add to cart',
+                      onTap: () {
+                        addToCart(database);
+                      }),
                   const SizedBox(height: 32),
                 ],
               ),
