@@ -24,25 +24,27 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           useMaterial3: true,
-          scaffoldBackgroundColor: Color(0xFFE5E5E5),
+          appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
+          iconTheme: const IconThemeData(color: Colors.black),
+          scaffoldBackgroundColor: const Color(0xFFE5E5E5),
           primaryColor: Colors.red,
           inputDecorationTheme: InputDecorationTheme(
             labelStyle: Theme.of(context).textTheme.labelSmall,
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(2.0),
-              borderSide: BorderSide(color: Colors.grey),
+              borderSide: const BorderSide(color: Colors.grey),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(2.0),
-              borderSide: BorderSide(color: Colors.grey),
+              borderSide: const BorderSide(color: Colors.grey),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(2.0),
-              borderSide: BorderSide(color: Colors.red),
+              borderSide: const BorderSide(color: Colors.red),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(2.0),
-              borderSide: BorderSide(color: Colors.red),
+              borderSide: const BorderSide(color: Colors.red),
             ),
           ),
         ),
