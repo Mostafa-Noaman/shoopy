@@ -81,7 +81,7 @@ class HomePage extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 26),
+          const SizedBox(height: 26),
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
@@ -92,7 +92,7 @@ class HomePage extends StatelessWidget {
                   description: 'Super Summer Sales!',
                 ),
                 SizedBox(
-                  height: 300,
+                  height: 330,
                   child: StreamBuilder<List<ProductModel>>(
                       stream: database.salesProductStream(),
                       builder: (context, snapshot) {
@@ -120,13 +120,14 @@ class HomePage extends StatelessWidget {
                         );
                       }),
                 ),
+                const SizedBox(height: 12),
                 buildHeaderOfList(
                   context,
                   title: 'New',
                   description: 'Super New Products!',
                 ),
                 SizedBox(
-                  height: 300,
+                  height: 330,
                   child: StreamBuilder<List<ProductModel>>(
                       stream: database.newProductStream(),
                       builder: (context, snapshot) {
