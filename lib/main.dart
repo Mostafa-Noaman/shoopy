@@ -31,11 +31,11 @@ class MyApp extends StatelessWidget {
           inputDecorationTheme: InputDecorationTheme(
             labelStyle: Theme.of(context).textTheme.labelSmall,
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(2.0),
+              borderRadius: BorderRadius.circular(16.0),
               borderSide: const BorderSide(color: Colors.grey),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(2.0),
+              borderRadius: BorderRadius.circular(16.0),
               borderSide: const BorderSide(color: Colors.grey),
             ),
             errorBorder: OutlineInputBorder(
