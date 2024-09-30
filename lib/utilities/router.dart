@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shooppyy/controllers/database_controller.dart';
 import 'package:shooppyy/models/product_model.dart';
 import 'package:shooppyy/utilities/routes.dart';
 import 'package:shooppyy/views/pages/bottom_nav_bar.dart';
@@ -15,10 +17,15 @@ Route<dynamic> onGenerate(RouteSettings settings) {
       return CupertinoPageRoute(
           builder: (_) => BottomNavBar(), settings: settings);
     case AppRoutes.productDetailsRoute:
-      final product = settings.arguments as ProductModel;
+      final args = settings.arguments as Map<String, dynamic>;
+      final product = args['product'];
+      final database = args['database'];
       return CupertinoPageRoute(
-          builder: (_) => ProductDetails(
-                product: product,
+          builder: (_) => Provider<Database>.value(
+                value: database,
+                child: ProductDetails(
+                  product: product,
+                ),
               ),
           settings: settings);
     case AppRoutes.landingPageRoute:
