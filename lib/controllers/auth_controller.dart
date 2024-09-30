@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shooppyy/controllers/database_controller.dart';
+import 'package:shooppyy/models/user_model.dart';
 import 'package:shooppyy/services/auth.dart';
+import 'package:shooppyy/utilities/constants.dart';
 import 'package:shooppyy/utilities/enums.dart';
 
 class AuthController with ChangeNotifier {
@@ -7,6 +10,7 @@ class AuthController with ChangeNotifier {
   String email;
   String password;
   AuthFormType authFormType;
+  final database = FireStoreDatabase('123');
 
   AuthController({
     required this.auth,
@@ -31,7 +35,9 @@ class AuthController with ChangeNotifier {
       if (authFormType == AuthFormType.login) {
         await auth.loginWithEmailAndPassword(email, password);
       } else {
-        await auth.signUpWithEmailAndPassword(email, password);
+        final user = await auth.signUpWithEmailAndPassword(email, password);
+        await database.setUserData(UserModel(
+            uId: user?.uid ?? documentIdFromLocalData(), email: email));
       }
     } catch (e) {
       rethrow;
