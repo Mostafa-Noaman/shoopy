@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shooppyy/models/product_model.dart';
+import 'package:shooppyy/views/widgets/drop_down_menu.dart';
 import 'package:shooppyy/views/widgets/main_button.dart';
 
 class ProductDetails extends StatelessWidget {
@@ -37,25 +38,38 @@ class ProductDetails extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Column(
                 children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: InkWell(
-                      onTap: () {},
-                      child: const SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Icon(Icons.favorite_border_rounded),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: DropDownMenu(
+                          items: ['S', 'M', 'L', 'XL', 'XXL'],
+                          hint: 'Size',
+                          onSaved: (value) {},
+                        ),
+                      ),
+                      const Spacer(),
+                      InkWell(
+                        onTap: () {},
+                        child: const SizedBox(
+                          height: 60,
+                          width: 60,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Icon(
+                                Icons.favorite_border_rounded,
+                                size: 35,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                   const SizedBox(height: 16),
                   Row(
