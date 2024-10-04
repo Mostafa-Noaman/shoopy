@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:shooppyy/views/pages/cart_page.dart';
 import 'package:shooppyy/views/pages/home_page.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -17,7 +18,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     return [
       HomePage(),
       Container(),
-      Container(),
+      CartPage(),
       Container(),
       Container(),
     ];
