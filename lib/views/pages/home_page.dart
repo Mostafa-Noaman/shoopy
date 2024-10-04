@@ -111,6 +111,7 @@ class HomePage extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: ListItemHome(
                                 product: products[index],
+                                isNew: true,
                               ),
                             ),
                           );
@@ -144,7 +145,10 @@ class HomePage extends StatelessWidget {
                             itemCount: products.length,
                             itemBuilder: (context, index) => Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: ListItemHome(product: products[index]),
+                              child: ListItemHome(
+                                product: products[index],
+                                isNew: true,
+                              ),
                             ),
                           );
                         }

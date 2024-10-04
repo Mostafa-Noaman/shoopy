@@ -6,15 +6,22 @@ import 'package:shooppyy/models/product_model.dart';
 import 'package:shooppyy/utilities/routes.dart';
 
 class ListItemHome extends StatelessWidget {
-  const ListItemHome({super.key, required this.product});
+  ListItemHome(
+      {super.key,
+      required this.product,
+      required this.isNew,
+      this.addToFavorites,
+      this.isFavorite = false});
 
   final ProductModel product;
+  final bool isNew;
+  final VoidCallback? addToFavorites;
+  bool isFavorite;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final database = Provider.of<Database>(context);
-    bool isFavorite = false;
     return InkWell(
       onTap: () {
         Navigator.of(context, rootNavigator: true)
@@ -75,7 +82,7 @@ class ListItemHome extends StatelessWidget {
                     radius: 20,
                     backgroundColor: Colors.white,
                     child: InkWell(
-                      onTap: () {},
+                      onTap: addToFavorites,
                       child: Icon(
                         isFavorite
                             ? Icons.favorite_rounded
@@ -123,13 +130,38 @@ class ListItemHome extends StatelessWidget {
                       product.title,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
-                    Text(
-                      '${product.price.toString()}\$',
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelSmall
-                          ?.copyWith(color: Colors.grey),
-                    ),
+                    isNew
+                        ? Text(
+                            '${product.price}\$',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(color: Colors.grey),
+                          )
+                        : Text.rich(
+                            TextSpan(children: [
+                              TextSpan(
+                                text: '${product.price}\$  ',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(
+                                      color: Colors.grey,
+                                      decoration: TextDecoration.lineThrough,
+                                    ),
+                              ),
+                              TextSpan(
+                                text:
+                                    '  ${product.price * (product.discount!) / 100}\$',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall!
+                                    .copyWith(
+                                      color: Colors.red,
+                                    ),
+                              ),
+                            ]),
+                          ),
                   ],
                 ),
               ),
