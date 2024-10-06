@@ -6,7 +6,6 @@ import 'package:shooppyy/controllers/database_controller.dart';
 import 'package:shooppyy/services/auth.dart';
 import 'package:shooppyy/views/pages/auth_page.dart';
 import 'package:shooppyy/views/pages/bottom_nav_bar.dart';
-import 'package:shooppyy/views/pages/home_page.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});

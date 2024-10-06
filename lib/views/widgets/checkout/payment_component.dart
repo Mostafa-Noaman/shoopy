@@ -23,7 +23,7 @@ class PaymentComponent extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 16),
-        Text('**** **** **** *354'),
+        const Text('**** **** **** *354'),
       ],
     );
   }

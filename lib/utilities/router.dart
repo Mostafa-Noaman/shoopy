@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shooppyy/controllers/database_controller.dart';
 import 'package:shooppyy/utilities/routes.dart';
@@ -13,10 +11,11 @@ import 'package:shooppyy/views/pages/product_details.dart';
 Route<dynamic> onGenerate(RouteSettings settings) {
   switch (settings.name) {
     case AppRoutes.loginPageRoute:
-      return CupertinoPageRoute(builder: (_) => AuthPage(), settings: settings);
+      return CupertinoPageRoute(
+          builder: (_) => const AuthPage(), settings: settings);
     case AppRoutes.bottomNavBarRoute:
       return CupertinoPageRoute(
-          builder: (_) => BottomNavBar(), settings: settings);
+          builder: (_) => const BottomNavBar(), settings: settings);
     case AppRoutes.productDetailsRoute:
       final args = settings.arguments as Map<String, dynamic>;
       final product = args['product'];
@@ -34,7 +33,7 @@ Route<dynamic> onGenerate(RouteSettings settings) {
       return CupertinoPageRoute(
           builder: (_) => Provider<Database>.value(
                 value: database,
-                child: CheckoutPage(),
+                child: const CheckoutPage(),
               ),
           settings: settings);
     case AppRoutes.landingPageRoute:

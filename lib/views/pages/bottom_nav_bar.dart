@@ -16,9 +16,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   List<Widget> _buildScreens() {
     return [
-      HomePage(),
+      const HomePage(),
       Container(),
-      CartPage(),
+      const CartPage(),
       Container(),
       Container(),
     ];
@@ -27,31 +27,31 @@ class _BottomNavBarState extends State<BottomNavBar> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.home),
+        icon: const Icon(CupertinoIcons.home),
         title: ("Home"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.bag),
+        icon: const Icon(CupertinoIcons.bag),
         title: ("Shop"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.shopping_cart),
+        icon: const Icon(CupertinoIcons.shopping_cart),
         title: ("Cart"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.heart),
+        icon: const Icon(CupertinoIcons.heart),
         title: ("Favorite"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.profile_circled),
+        icon: const Icon(CupertinoIcons.profile_circled),
         title: ("Account"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,

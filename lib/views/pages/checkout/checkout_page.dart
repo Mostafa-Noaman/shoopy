@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shooppyy/controllers/database_controller.dart';
 import 'package:shooppyy/models/delivery_method.dart';
-import 'package:shooppyy/utilities/app_assets.dart';
 import 'package:shooppyy/views/widgets/checkout/checkout_order_details.dart';
 import 'package:shooppyy/views/widgets/checkout/delivery_method_card.dart';
 import 'package:shooppyy/views/widgets/checkout/payment_component.dart';
@@ -32,7 +31,7 @@ class CheckoutPage extends StatelessWidget {
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 8),
-              ShippingAddressComponent(),
+              const ShippingAddressComponent(),
               const SizedBox(height: 24),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -54,7 +53,7 @@ class CheckoutPage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8),
-              PaymentComponent(),
+              const PaymentComponent(),
               const SizedBox(height: 24),
               Text(
                 'Delivery Method',
@@ -67,7 +66,7 @@ class CheckoutPage extends StatelessWidget {
                     if (snapshot.connectionState == ConnectionState.active) {
                       final deliveryMethod = snapshot.data;
                       if (deliveryMethod == null || deliveryMethod.isEmpty) {
-                        return Center(
+                        return const Center(
                           child: Text('No delivery methods available'),
                         );
                       }
@@ -90,7 +89,7 @@ class CheckoutPage extends StatelessWidget {
                     );
                   }),
               const SizedBox(height: 32),
-              CheckoutOrderDetails(),
+              const CheckoutOrderDetails(),
               const SizedBox(height: 64),
               MainButton(text: 'Submit Order', onTap: () {}),
             ],
