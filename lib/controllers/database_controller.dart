@@ -1,6 +1,7 @@
 import 'package:shooppyy/models/delivery_method.dart';
 import 'package:shooppyy/models/product_model.dart';
 import 'package:shooppyy/models/cart_model.dart';
+import 'package:shooppyy/models/shipping_address.dart';
 import 'package:shooppyy/models/user_model.dart';
 import 'package:shooppyy/services/firestore_services.dart';
 import 'package:shooppyy/utilities/api_path.dart';
@@ -13,6 +14,7 @@ abstract class Database {
   Stream<List<CartModel>> myProductsCart();
 
   Stream<List<DeliveryMethod>> deliveryMethodStream();
+  Stream<List<ShippingAddress>> getDefaultShippingAddress();
 
   Future<void> setUserData(UserModel userData);
 
@@ -60,5 +62,13 @@ class FireStoreDatabase implements Database {
         path: ApiPath.deliveryMethods,
         builder: (data, documentId) =>
             DeliveryMethod.fromMap(data!, documentId),
+      );
+
+  @override
+  Stream<List<ShippingAddress>> getDefaultShippingAddress() =>
+      _service.collectionStream(
+        path: ApiPath.shippingAddress(uId),
+        builder: (data, documentId) =>
+            ShippingAddress.fromMap(data!, documentId),
       );
 }

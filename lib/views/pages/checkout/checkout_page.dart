@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shooppyy/controllers/database_controller.dart';
 import 'package:shooppyy/models/delivery_method.dart';
+import 'package:shooppyy/models/shipping_address.dart';
+import 'package:shooppyy/utilities/routes.dart';
 import 'package:shooppyy/views/widgets/checkout/checkout_order_details.dart';
 import 'package:shooppyy/views/widgets/checkout/delivery_method_card.dart';
 import 'package:shooppyy/views/widgets/checkout/payment_component.dart';
@@ -31,7 +33,42 @@ class CheckoutPage extends StatelessWidget {
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 8),
-              const ShippingAddressComponent(),
+              StreamBuilder<List<ShippingAddress>>(
+                  stream: database.getDefaultShippingAddress(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      final shippingAddresses = snapshot.data;
+                      if (shippingAddresses == null ||
+                          shippingAddresses.isEmpty) {
+                        return Center(
+                          child: Column(
+                            children: [
+                              const Text('No shipping addresses'),
+                              const SizedBox(height: 6),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                      AppRoutes.addShippingAddressPage,
+                                      arguments: database);
+                                },
+                                child: Text(
+                                  'Add a new address.',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium!
+                                      .copyWith(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      return const ShippingAddressComponent();
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    );
+                  }),
               const SizedBox(height: 24),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
