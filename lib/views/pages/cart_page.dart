@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shooppyy/controllers/database_controller.dart';
 import 'package:shooppyy/models/cart_model.dart';
+import 'package:shooppyy/utilities/routes.dart';
 import 'package:shooppyy/views/widgets/cart_list_item.dart';
+import 'package:shooppyy/views/widgets/cart_price_row.dart';
 
 import '../widgets/main_button.dart';
 
@@ -15,6 +17,21 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   int totalAmount = 0;
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    final products = await Provider.of<Database>(context, listen: false)
+        .myProductsCart()
+        .first;
+    products.forEach(
+      (element) {
+        setState(() {
+          totalAmount += element.price;
+        });
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,28 +94,18 @@ class _CartPageState extends State<CartPage> {
                           },
                         ),
                       const SizedBox(height: 24.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Total Amount:',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(
-                                  color: Colors.grey,
-                                ),
-                          ),
-                          Text(
-                            '$totalAmount\$',
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                        ],
+                      CartPriceRow(
+                        title: 'Total amount',
+                        priceValue: totalAmount.toString(),
                       ),
                       const SizedBox(height: 32.0),
                       MainButton(
                         text: 'Checkout',
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context, rootNavigator: true).pushNamed(
+                              AppRoutes.checkoutPageRoute,
+                              arguments: database);
+                        },
                       ),
                       const SizedBox(height: 32.0),
                     ],
