@@ -1,10 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shooppyy/controllers/database_controller.dart';
-import 'package:shooppyy/models/product_model.dart';
 import 'package:shooppyy/utilities/routes.dart';
 import 'package:shooppyy/views/pages/bottom_nav_bar.dart';
+import 'package:shooppyy/views/pages/checkout/checkout_page.dart';
 import 'package:shooppyy/views/pages/landing_page.dart';
 import 'package:shooppyy/views/pages/auth_page.dart';
 import 'package:shooppyy/views/pages/product_details.dart';
@@ -26,6 +27,14 @@ Route<dynamic> onGenerate(RouteSettings settings) {
                 child: ProductDetails(
                   product: product,
                 ),
+              ),
+          settings: settings);
+    case AppRoutes.checkoutPageRoute:
+      final database = settings.arguments as Database;
+      return CupertinoPageRoute(
+          builder: (_) => Provider<Database>.value(
+                value: database,
+                child: CheckoutPage(),
               ),
           settings: settings);
     case AppRoutes.landingPageRoute:
