@@ -18,7 +18,10 @@ class MainButton extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: Theme.of(context).textTheme.labelLarge,
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium!
+              .copyWith(color: Colors.white),
         ),
       ),
     );
