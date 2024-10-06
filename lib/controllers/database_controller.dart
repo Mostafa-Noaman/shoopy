@@ -1,3 +1,4 @@
+import 'package:shooppyy/models/delivery_method.dart';
 import 'package:shooppyy/models/product_model.dart';
 import 'package:shooppyy/models/cart_model.dart';
 import 'package:shooppyy/models/user_model.dart';
@@ -10,6 +11,8 @@ abstract class Database {
   Stream<List<ProductModel>> newProductStream();
 
   Stream<List<CartModel>> myProductsCart();
+
+  Stream<List<DeliveryMethod>> deliveryMethodStream();
 
   Future<void> setUserData(UserModel userData);
 
@@ -49,5 +52,13 @@ class FireStoreDatabase implements Database {
           data!,
           documentId,
         ),
+      );
+
+  @override
+  Stream<List<DeliveryMethod>> deliveryMethodStream() =>
+      _service.collectionStream(
+        path: ApiPath.deliveryMethods,
+        builder: (data, documentId) =>
+            DeliveryMethod.fromMap(data!, documentId),
       );
 }
