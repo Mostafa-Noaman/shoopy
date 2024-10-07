@@ -14,11 +14,14 @@ abstract class Database {
   Stream<List<CartModel>> myProductsCart();
 
   Stream<List<DeliveryMethod>> deliveryMethodStream();
+
   Stream<List<ShippingAddress>> getDefaultShippingAddress();
 
   Future<void> setUserData(UserModel userData);
 
   Future<void> addToCart(CartModel product);
+
+  Future<void> saveAddress(ShippingAddress address);
 }
 
 class FireStoreDatabase implements Database {
@@ -71,4 +74,8 @@ class FireStoreDatabase implements Database {
         builder: (data, documentId) =>
             ShippingAddress.fromMap(data!, documentId),
       );
+
+  @override
+  Future<void> saveAddress(ShippingAddress address) => _service.setData(
+      path: ApiPath.saveAddress(uId, address.id), data: address.toMap());
 }
