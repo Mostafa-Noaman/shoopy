@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:shooppyy/controllers/database_controller.dart';
+import 'package:shooppyy/utilities/args_model/add_shipping_address_args.dart';
 import 'package:shooppyy/utilities/routes.dart';
 import 'package:shooppyy/views/pages/bottom_nav_bar.dart';
 import 'package:shooppyy/views/pages/checkout/add_shipping_Address_page.dart';
 import 'package:shooppyy/views/pages/checkout/checkout_page.dart';
+import 'package:shooppyy/views/pages/checkout/shipping_addresses_page.dart';
 import 'package:shooppyy/views/pages/landing_page.dart';
 import 'package:shooppyy/views/pages/auth_page.dart';
 import 'package:shooppyy/views/pages/product_details.dart';
@@ -38,11 +40,24 @@ Route<dynamic> onGenerate(RouteSettings settings) {
               ),
           settings: settings);
     case AppRoutes.addShippingAddressPage:
-      final database = settings.arguments as Database;
+      final args = settings.arguments as AddShippingAddressArgs;
+      final database = args.database;
+      final shippingAddress = args.shippingAddress;
       return CupertinoPageRoute(
           builder: (_) => Provider<Database>.value(
                 value: database,
-                child: const AddShippingAddressPage(),
+                child: AddShippingAddressPage(
+                  shippingAddress: shippingAddress,
+                ),
+              ),
+          settings: settings);
+    case AppRoutes.shippingAddressesPage:
+      final database = settings.arguments as Database;
+
+      return CupertinoPageRoute(
+          builder: (_) => Provider<Database>.value(
+                value: database,
+                child: const ShippingAddressesPage(),
               ),
           settings: settings);
     case AppRoutes.landingPageRoute:

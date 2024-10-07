@@ -7,7 +7,9 @@ import 'package:shooppyy/views/widgets/main_button.dart';
 import 'package:shooppyy/views/widgets/main_dialog.dart';
 
 class AddShippingAddressPage extends StatefulWidget {
-  const AddShippingAddressPage({super.key});
+  const AddShippingAddressPage({super.key, this.shippingAddress});
+
+  final ShippingAddress? shippingAddress;
 
   @override
   State<AddShippingAddressPage> createState() => _AddShippingAddressPageState();
@@ -21,6 +23,21 @@ class _AddShippingAddressPageState extends State<AddShippingAddressPage> {
   final _stateController = TextEditingController();
   final _zipCodeController = TextEditingController();
   final _countryController = TextEditingController();
+  ShippingAddress? shippingAddress;
+
+  @override
+  void initState() {
+    super.initState();
+    shippingAddress = widget.shippingAddress;
+    if (shippingAddress != null) {
+      _fulNameController.text = shippingAddress!.fullName;
+      _addressController.text = shippingAddress!.address;
+      _cityController.text = shippingAddress!.city;
+      _stateController.text = shippingAddress!.state;
+      _zipCodeController.text = shippingAddress!.zipCode;
+      _countryController.text = shippingAddress!.country;
+    }
+  }
 
   @override
   void dispose() {
@@ -37,7 +54,9 @@ class _AddShippingAddressPageState extends State<AddShippingAddressPage> {
     try {
       if (_formKey.currentState!.validate()) {
         final address = ShippingAddress(
-          id: documentIdFromLocalData(),
+          id: shippingAddress != null
+              ? shippingAddress!.id
+              : documentIdFromLocalData(),
           fullName: _fulNameController.text.trim(),
           country: _countryController.text.trim(),
           address: _addressController.text.trim(),
@@ -62,7 +81,9 @@ class _AddShippingAddressPageState extends State<AddShippingAddressPage> {
     final database = Provider.of<Database>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Adding shipping Address'),
+        title: Text(shippingAddress != null
+            ? 'Editing shipping Address'
+            : 'Adding shipping Address'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
