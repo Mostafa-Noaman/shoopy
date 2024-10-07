@@ -6,6 +6,7 @@ import 'package:shooppyy/utilities/routes.dart';
 import 'package:shooppyy/views/pages/bottom_nav_bar.dart';
 import 'package:shooppyy/views/pages/checkout/add_shipping_Address_page.dart';
 import 'package:shooppyy/views/pages/checkout/checkout_page.dart';
+import 'package:shooppyy/views/pages/checkout/payment_methods_page.dart';
 import 'package:shooppyy/views/pages/checkout/shipping_addresses_page.dart';
 import 'package:shooppyy/views/pages/landing_page.dart';
 import 'package:shooppyy/views/pages/auth_page.dart';
@@ -60,6 +61,8 @@ Route<dynamic> onGenerate(RouteSettings settings) {
                 child: const ShippingAddressesPage(),
               ),
           settings: settings);
+    case AppRoutes.paymentMethodsPage:
+      return CupertinoPageRoute(builder: (_) => const PaymentMethodsPage());
     case AppRoutes.landingPageRoute:
     default:
       return CupertinoPageRoute(

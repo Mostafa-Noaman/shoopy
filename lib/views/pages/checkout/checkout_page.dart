@@ -81,7 +81,10 @@ class CheckoutPage extends StatelessWidget {
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushNamed(AppRoutes.paymentMethodsPage);
+                    },
                     child: Text(
                       'Change',
                       style: Theme.of(context)
