@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shooppyy/controllers/database_controller.dart';
 import 'package:shooppyy/models/shipping_address.dart';
+import 'package:shooppyy/utilities/args_model/add_shipping_address_args.dart';
 import 'package:shooppyy/utilities/routes.dart';
 import 'package:shooppyy/views/widgets/checkout/shipping_address_component.dart';
 import 'package:shooppyy/views/widgets/checkout/shipping_address_state_item.dart';
@@ -47,8 +48,8 @@ class _ShippingAddressesPageState extends State<ShippingAddressesPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context)
-              .pushNamed(AppRoutes.addShippingAddressPage, arguments: database);
+          Navigator.of(context).pushNamed(AppRoutes.addShippingAddressPage,
+              arguments: AddShippingAddressArgs(database: database));
         },
         backgroundColor: Colors.red,
         child: const Icon(Icons.add),
