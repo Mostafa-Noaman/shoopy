@@ -38,8 +38,13 @@ Route<dynamic> onGenerate(RouteSettings settings) {
               ),
           settings: settings);
     case AppRoutes.addShippingAddressPage:
+      final database = settings.arguments as Database;
       return CupertinoPageRoute(
-          builder: (_) => const AddShippingAddressPage(), settings: settings);
+          builder: (_) => Provider<Database>.value(
+                value: database,
+                child: const AddShippingAddressPage(),
+              ),
+          settings: settings);
     case AppRoutes.landingPageRoute:
     default:
       return CupertinoPageRoute(
