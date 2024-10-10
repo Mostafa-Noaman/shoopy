@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 class MainButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onTap;
+  final String? text;
+  final VoidCallback? onTap;
+  final Widget? child;
 
-  const MainButton({super.key, required this.text, required this.onTap});
+  MainButton({super.key, this.text, this.onTap, this.child}) {
+    assert(text != null || child != null);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +19,15 @@ class MainButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).primaryColor,
         ),
-        child: Text(
-          text,
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium!
-              .copyWith(color: Colors.white),
-        ),
+        child: text != null
+            ? Text(
+                text!,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(color: Colors.white),
+              )
+            : child,
       ),
     );
   }

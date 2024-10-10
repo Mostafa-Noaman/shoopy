@@ -13,4 +13,9 @@ class ApiPath {
 
   static String saveAddress(String uid, String addressId) =>
       'users/$uid/shippingAddresses/$addressId';
+
+  static String addCard(String uid, String cardId) =>
+      'users/$uid/cards/$cardId';
+
+  static String cards(String uid) => 'users/$uid/cards/';
 }

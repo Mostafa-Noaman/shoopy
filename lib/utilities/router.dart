@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:shooppyy/controllers/checkout_cubit.dart';
 import 'package:shooppyy/controllers/database_controller.dart';
 import 'package:shooppyy/utilities/args_model/add_shipping_address_args.dart';
 import 'package:shooppyy/utilities/routes.dart';
@@ -62,7 +64,16 @@ Route<dynamic> onGenerate(RouteSettings settings) {
               ),
           settings: settings);
     case AppRoutes.paymentMethodsPage:
-      return CupertinoPageRoute(builder: (_) => const PaymentMethodsPage());
+      return CupertinoPageRoute(
+        builder: (_) => BlocProvider(
+          create: (context) {
+            final cubit = CheckoutCubit();
+            cubit.fetchCards();
+            return cubit;
+          },
+          child: const PaymentMethodsPage(),
+        ),
+      );
     case AppRoutes.landingPageRoute:
     default:
       return CupertinoPageRoute(

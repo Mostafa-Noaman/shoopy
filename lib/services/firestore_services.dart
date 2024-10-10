@@ -21,6 +21,15 @@ class FireStoreServices {
     await reference.delete();
   }
 
+  Future<T> getDocument<T>({
+    required String path,
+    required T Function(Map<String, dynamic>? data, String documentId) builder,
+  }) async {
+    final reference = _fireStore.doc(path);
+    final snapshot = await reference.get();
+    return builder(snapshot.data() as Map<String, dynamic>, snapshot.id);
+  }
+
   Stream<T> documentStream<T>(
       {required String path,
       required T Function(Map<String, dynamic>? data, String documentId)
@@ -28,6 +37,28 @@ class FireStoreServices {
     final reference = _fireStore.doc(path);
     final snapShots = reference.snapshots();
     return snapShots.map((snapshot) => builder(snapshot.data(), snapshot.id));
+  }
+
+  Future<List<T>> getCollection<T>({
+    required String path,
+    required T Function(Map<String, dynamic>? data, String documentId) builder,
+    Query Function(Query query)? queryBuilder,
+    int Function(T lhs, T rhs)? sort,
+  }) async {
+    Query query = _fireStore.collection(path);
+    if (queryBuilder != null) {
+      query = queryBuilder(query);
+    }
+    final snapshots = await query.get();
+    final result = snapshots.docs
+        .map((snapShot) =>
+            builder(snapShot.data() as Map<String, dynamic>, snapShot.id))
+        .where((value) => value != null)
+        .toList();
+    if (sort != null) {
+      result.sort(sort);
+    }
+    return result;
   }
 
   Stream<List<T>> collectionStream<T>({
