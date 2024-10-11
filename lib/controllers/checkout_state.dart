@@ -29,7 +29,11 @@ final class CardsFetchingFailed extends CheckoutState {
   CardsFetchingFailed(this.error);
 }
 
-final class DeletingCards extends CheckoutState {}
+final class DeletingCards extends CheckoutState {
+  final String id;
+
+  DeletingCards(this.id);
+}
 
 final class CardsDeleted extends CheckoutState {}
 
@@ -37,4 +41,14 @@ final class DeleteCardsFailed extends CheckoutState {
   final String error;
 
   DeleteCardsFailed(this.error);
+}
+
+final class MakingPreferred extends CheckoutState {}
+
+final class PreferredMade extends CheckoutState {}
+
+final class PreferredMakingFailed extends CheckoutState {
+  final String error;
+
+  PreferredMakingFailed(this.error);
 }

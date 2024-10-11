@@ -4,6 +4,7 @@ class PaymentMethod {
   final String cardNumber;
   final String expiryDate;
   final String cvv;
+  final bool isPreferred;
 
   PaymentMethod({
     required this.id,
@@ -11,6 +12,7 @@ class PaymentMethod {
     required this.cardNumber,
     required this.expiryDate,
     required this.cvv,
+    this.isPreferred = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -20,6 +22,7 @@ class PaymentMethod {
     result.addAll({'cardNumber': cardNumber});
     result.addAll({'expiryDate': expiryDate});
     result.addAll({'cvv': cvv});
+    result.addAll({'isPreferred': isPreferred});
     return result;
   }
 
@@ -30,7 +33,25 @@ class PaymentMethod {
       cardNumber: map['cardNumber'] ?? '',
       expiryDate: map['expiryDate'] ?? '',
       cvv: map['cvv'] ?? '',
+      isPreferred: map['isPreferred'] ?? '',
     );
   }
-//
+
+  PaymentMethod copyWith({
+    String? id,
+    String? name,
+    String? cardNumber,
+    String? expiryDate,
+    String? cvv,
+    bool? isPreferred,
+  }) {
+    return PaymentMethod(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      cardNumber: cardNumber ?? this.cardNumber,
+      expiryDate: expiryDate ?? this.expiryDate,
+      cvv: cvv ?? this.cvv,
+      isPreferred: isPreferred ?? this.isPreferred,
+    );
+  }
 }

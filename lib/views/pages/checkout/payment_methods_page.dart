@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shooppyy/controllers/checkout_cubit.dart';
+import 'package:shooppyy/models/payment_method_model.dart';
 import 'package:shooppyy/views/widgets/checkout/add_new_card_bottom_sheet.dart';
 import 'package:shooppyy/views/widgets/main_button.dart';
 
@@ -10,12 +11,38 @@ class PaymentMethodsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final checkOutCubit = BlocProvider.of<CheckoutCubit>(context);
+    Future<void> showBottomSheet([PaymentMethod? paymentMethod]) async {
+      showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (_) {
+            return BlocProvider.value(
+              value: checkOutCubit,
+              child: AddNewCardBottomSheet(
+                paymentMethod: paymentMethod,
+              ),
+            );
+          }).then((value) => checkOutCubit.fetchCards());
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Payment Methods'),
       ),
-      body: BlocBuilder<CheckoutCubit, CheckoutState>(
+      body: BlocConsumer<CheckoutCubit, CheckoutState>(
         bloc: checkOutCubit,
+        listenWhen: (previous, current) =>
+            current is PreferredMade || current is PreferredMakingFailed,
+        listener: (context, state) {
+          if (state is PreferredMade) {
+            Navigator.of(context).pop();
+          } else if (state is PreferredMakingFailed) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(state.error),
+              backgroundColor: Colors.red,
+            ));
+          }
+        },
         buildWhen: (previous, current) =>
             current is FetchingCards ||
             current is CardsFetched ||
@@ -68,12 +95,32 @@ class PaymentMethodsPage extends StatelessWidget {
                                   Row(
                                     children: [
                                       IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          showBottomSheet(payment);
+                                        },
                                         icon: const Icon(Icons.edit_rounded),
                                       ),
-                                      IconButton(
-                                        onPressed: () {},
-                                        icon: const Icon(Icons.delete_rounded),
+                                      BlocBuilder<CheckoutCubit, CheckoutState>(
+                                        bloc: checkOutCubit,
+                                        buildWhen: (previous, current) =>
+                                            (current is DeletingCards &&
+                                                current.id == payment.id) ||
+                                            current is CardsDeleted ||
+                                            current is DeleteCardsFailed,
+                                        builder: (context, state) {
+                                          if (state is DeletingCards) {
+                                            return const CircularProgressIndicator
+                                                .adaptive();
+                                          }
+                                          return IconButton(
+                                            onPressed: () async {
+                                              await checkOutCubit
+                                                  .deleteCard(payment);
+                                            },
+                                            icon: const Icon(
+                                                Icons.delete_rounded),
+                                          );
+                                        },
                                       ),
                                     ],
                                   ),
@@ -87,15 +134,7 @@ class PaymentMethodsPage extends StatelessWidget {
                     MainButton(
                       text: 'Add new card',
                       onTap: () {
-                        showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            builder: (_) {
-                              return BlocProvider.value(
-                                value: checkOutCubit,
-                                child: const AddNewCardBottomSheet(),
-                              );
-                            }).then((value) => checkOutCubit.fetchCards());
+                        showBottomSheet();
                       },
                     ),
                   ],

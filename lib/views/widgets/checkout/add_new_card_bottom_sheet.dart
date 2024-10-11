@@ -5,7 +5,9 @@ import 'package:shooppyy/models/payment_method_model.dart';
 import 'package:shooppyy/views/widgets/main_button.dart';
 
 class AddNewCardBottomSheet extends StatefulWidget {
-  const AddNewCardBottomSheet({super.key});
+  const AddNewCardBottomSheet({super.key, this.paymentMethod});
+
+  final PaymentMethod? paymentMethod;
 
   @override
   State<AddNewCardBottomSheet> createState() => _AddNewCardBottomSheetState();
@@ -26,6 +28,12 @@ class _AddNewCardBottomSheetState extends State<AddNewCardBottomSheet> {
     _cardNumberController = TextEditingController();
     _expireDateController = TextEditingController();
     _cvvController = TextEditingController();
+    if (widget.paymentMethod != null) {
+      _nameCardController.text = widget.paymentMethod!.name;
+      _expireDateController.text = widget.paymentMethod!.expiryDate;
+      _cardNumberController.text = widget.paymentMethod!.cardNumber;
+      _cvvController.text = widget.paymentMethod!.cvv;
+    }
   }
 
   @override
@@ -154,11 +162,14 @@ class _AddNewCardBottomSheetState extends State<AddNewCardBottomSheet> {
                     );
                   }
                   return MainButton(
-                    text: 'Add Card',
+                    text:
+                        widget.paymentMethod != null ? 'Edit Card' : 'Add Card',
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
                         final paymentMethod = PaymentMethod(
-                          id: DateTime.now().toIso8601String(),
+                          id: widget.paymentMethod != null
+                              ? widget.paymentMethod!.id
+                              : DateTime.now().toIso8601String(),
                           name: _nameCardController.text,
                           cardNumber: _cardNumberController.text,
                           expiryDate: _expireDateController.text,
