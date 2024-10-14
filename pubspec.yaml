@@ -37,6 +37,7 @@ dependencies:
   provider:
   flutter_rating_bar:
   flutter_bloc:
+  dio:
 
 
   # The following adds the Cupertino Icons font to your application.

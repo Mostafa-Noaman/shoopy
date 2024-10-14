@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:shooppyy/models/payment_method_model.dart';
 import 'package:shooppyy/services/checkout_services.dart';
+import 'package:shooppyy/services/stripe_services.dart';
 
 part 'checkout_state.dart';
 
@@ -9,6 +10,20 @@ class CheckoutCubit extends Cubit<CheckoutState> {
   CheckoutCubit() : super(CheckoutInitial());
 
   final checkOutService = CheckOutServicesImpl();
+
+  Future<void> makePayment(double amount) async {
+    emit(MakingPayment());
+    try {
+      await StripeServices.instance.makePayment(amount, 'usd');
+      emit(PaymentMade());
+    } catch (e) {
+      emit(
+        PaymentMakingFailed(
+          e.toString(),
+        ),
+      );
+    }
+  }
 
   Future<void> addCard(PaymentMethod paymentMethod) async {
     emit(AddingCards());

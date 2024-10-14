@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:shooppyy/controllers/checkout_cubit.dart';
 import 'package:shooppyy/controllers/database_controller.dart';
 import 'package:shooppyy/models/delivery_method.dart';
 import 'package:shooppyy/models/shipping_address.dart';
@@ -17,6 +19,7 @@ class CheckoutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final database = Provider.of<Database>(context);
+    final checkoutCubit = BlocProvider.of<CheckoutCubit>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('CheckOut'),
@@ -134,7 +137,46 @@ class CheckoutPage extends StatelessWidget {
               const SizedBox(height: 32),
               const CheckoutOrderDetails(),
               const SizedBox(height: 64),
-              MainButton(text: 'Submit Order', onTap: () {}),
+              BlocConsumer<CheckoutCubit, CheckoutState>(
+                bloc: checkoutCubit,
+                listenWhen: (previous, current) =>
+                    current is PaymentMade ||
+                    current is MakingPayment ||
+                    current is PaymentMakingFailed,
+                listener: (context, state) {
+                  if (state is PaymentMakingFailed) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.error),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  } else if (state is PaymentMade) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Success'),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                  }
+                },
+                buildWhen: (previous, current) =>
+                    current is PaymentMade ||
+                    current is MakingPayment ||
+                    current is PaymentMakingFailed,
+                builder: (context, state) {
+                  if (state is MakingPayment) {
+                    MainButton(
+                      child: const CircularProgressIndicator.adaptive(),
+                    );
+                  }
+                  return MainButton(
+                      text: 'Submit Order',
+                      onTap: () async {
+                        await checkoutCubit.makePayment(450);
+                      });
+                },
+              ),
             ],
           ),
         ),
