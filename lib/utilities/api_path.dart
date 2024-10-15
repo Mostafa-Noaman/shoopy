@@ -1,5 +1,6 @@
 class ApiPath {
   static String products = 'products/';
+  static String product(String uid) => 'products/$uid';
 
   static String user(String uid) => 'users/$uid';
 
@@ -9,9 +10,10 @@ class ApiPath {
   static String myProductCart(String uid) => 'users/$uid/cart/';
   static String deliveryMethods = 'deliveryMethods/';
 
-  static String shippingAddress(String uid) => 'users/$uid/shippingAddresses';
+  static String userShippingAddress(String uid) =>
+      'users/$uid/shippingAddresses/';
 
-  static String saveAddress(String uid, String addressId) =>
+  static String newAddress(String uid, String addressId) =>
       'users/$uid/shippingAddresses/$addressId';
 
   static String addCard(String uid, String cardId) =>

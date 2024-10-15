@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shooppyy/controllers/checkout_cubit.dart';
+import 'package:shooppyy/controllers/checkout/checkout_cubit.dart';
 import 'package:shooppyy/models/payment_method_model.dart';
 import 'package:shooppyy/views/widgets/checkout/add_new_card_bottom_sheet.dart';
 import 'package:shooppyy/views/widgets/main_button.dart';

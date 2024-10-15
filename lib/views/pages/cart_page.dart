@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shooppyy/controllers/database_controller.dart';
-import 'package:shooppyy/models/cart_model.dart';
+import 'package:shooppyy/models/add_to_cart_model.dart';
 import 'package:shooppyy/utilities/routes.dart';
 import 'package:shooppyy/views/widgets/cart_list_item.dart';
 import 'package:shooppyy/views/widgets/cart_price_row.dart';
@@ -38,7 +38,7 @@ class _CartPageState extends State<CartPage> {
     final database = Provider.of<Database>(context);
 
     return SafeArea(
-      child: StreamBuilder<List<CartModel>>(
+      child: StreamBuilder<List<AddToCartModel>>(
           stream: database.myProductsCart(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {

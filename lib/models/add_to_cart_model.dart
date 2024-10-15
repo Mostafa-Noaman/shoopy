@@ -1,4 +1,4 @@
-class CartModel {
+class AddToCartModel {
   final String id;
   final String productId;
   final String title;
@@ -9,7 +9,7 @@ class CartModel {
   final String color;
   final String size;
 
-  CartModel(
+  AddToCartModel(
       {required this.id,
       required this.productId,
       required this.title,
@@ -34,8 +34,8 @@ class CartModel {
     return result;
   }
 
-  factory CartModel.fromMap(Map<String, dynamic> map, String documentId) {
-    return CartModel(
+  factory AddToCartModel.fromMap(Map<String, dynamic> map, String documentId) {
+    return AddToCartModel(
         id: documentId,
         productId: map['productId'],
         title: map['title'],

@@ -1,6 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:shooppyy/models/delivery_method.dart';
 import 'package:shooppyy/models/payment_method_model.dart';
+import 'package:shooppyy/models/shipping_address.dart';
+import 'package:shooppyy/services/auth_services.dart';
 import 'package:shooppyy/services/checkout_services.dart';
 import 'package:shooppyy/services/stripe_services.dart';
 
@@ -10,18 +13,16 @@ class CheckoutCubit extends Cubit<CheckoutState> {
   CheckoutCubit() : super(CheckoutInitial());
 
   final checkOutService = CheckOutServicesImpl();
+  final authServices = AuthServicesImpl();
+  final stripeServices = StripeServices.instance;
 
   Future<void> makePayment(double amount) async {
     emit(MakingPayment());
     try {
-      await StripeServices.instance.makePayment(amount, 'usd');
+      await stripeServices.makePayment(amount, 'usd');
       emit(PaymentMade());
     } catch (e) {
-      emit(
-        PaymentMakingFailed(
-          e.toString(),
-        ),
-      );
+      emit(PaymentMakingFailed(e.toString()));
     }
   }
 
@@ -70,6 +71,47 @@ class CheckoutCubit extends Cubit<CheckoutState> {
       emit(PreferredMade());
     } catch (e) {
       emit(PreferredMakingFailed(e.toString()));
+    }
+  }
+
+  Future<void> getCheckoutData() async {
+    emit(CheckoutLoading());
+    try {
+      final currentUser = authServices.currentUser;
+      final shippingAddresses =
+          await checkOutService.shippingAddresses(currentUser!.uid);
+      final deliveryMethods = await checkOutService.deliveryMethods();
+      emit(CheckoutLoaded(
+        deliveryMethods: deliveryMethods,
+        shippingAddress:
+            shippingAddresses.isEmpty ? null : shippingAddresses[0],
+      ));
+    } catch (e) {
+      emit(CheckoutLoadingFailed(e.toString()));
+    }
+  }
+
+  Future<void> getShippingAddresses() async {
+    emit(FetchingAddresses());
+    try {
+      final currentUser = authServices.currentUser;
+      final shippingAddresses =
+          await checkOutService.shippingAddresses(currentUser!.uid);
+
+      emit(AddressesFetched(shippingAddresses));
+    } catch (e) {
+      emit(AddressesFetchingFailed(e.toString()));
+    }
+  }
+
+  Future<void> saveAddress(ShippingAddress address) async {
+    emit(AddingAddress());
+    try {
+      final currentUser = authServices.currentUser;
+      await checkOutService.saveAddress(currentUser!.uid, address);
+      emit(AddressAdded());
+    } catch (e) {
+      emit(AddressAddingFailed(e.toString()));
     }
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shooppyy/controllers/database_controller.dart';
-import 'package:shooppyy/models/cart_model.dart';
+import 'package:shooppyy/models/add_to_cart_model.dart';
 import 'package:shooppyy/models/product_model.dart';
 import 'package:shooppyy/views/widgets/drop_down_menu.dart';
 import 'package:shooppyy/views/widgets/main_button.dart';
@@ -24,7 +24,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   Future<void> addToCart(Database database) async {
     try {
-      final cartProduct = CartModel(
+      final cartProduct = AddToCartModel(
           id: documentIdFromLocalData(),
           productId: widget.product.id,
           title: widget.product.title,

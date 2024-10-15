@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:shooppyy/controllers/checkout_cubit.dart';
+import 'package:shooppyy/controllers/checkout/checkout_cubit.dart';
 import 'package:shooppyy/controllers/database_controller.dart';
 import 'package:shooppyy/models/delivery_method.dart';
 import 'package:shooppyy/models/shipping_address.dart';

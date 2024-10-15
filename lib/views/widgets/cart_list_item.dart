@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shooppyy/models/cart_model.dart';
+import 'package:shooppyy/models/add_to_cart_model.dart';
 
 class CartListItem extends StatelessWidget {
   const CartListItem({super.key, required this.cartItem});
 
-  final CartModel cartItem;
+  final AddToCartModel cartItem;
 
   @override
   Widget build(BuildContext context) {
