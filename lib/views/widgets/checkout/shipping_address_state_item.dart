@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shooppyy/controllers/checkout/checkout_cubit.dart';
 import 'package:shooppyy/utilities/args_model/add_shipping_address_args.dart';
-import '../../../controllers/database_controller.dart';
 import '../../../models/shipping_address.dart';
 import '../../../utilities/routes.dart';
 
@@ -26,7 +26,7 @@ class _ShippingAddressStateItemState extends State<ShippingAddressStateItem> {
 
   @override
   Widget build(BuildContext context) {
-    final database = Provider.of<Database>(context);
+    final checkoutCubit = BlocProvider.of<CheckoutCubit>(context);
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
@@ -48,8 +48,8 @@ class _ShippingAddressStateItemState extends State<ShippingAddressStateItem> {
                     Navigator.of(context).pushNamed(
                       AppRoutes.addShippingAddressPage,
                       arguments: AddShippingAddressArgs(
-                        database: database,
                         shippingAddress: widget.shippingAddress,
+                        checkoutCubit: checkoutCubit,
                       ),
                     );
                   },
@@ -81,7 +81,7 @@ class _ShippingAddressStateItemState extends State<ShippingAddressStateItem> {
                 });
                 final newAddress =
                     widget.shippingAddress.copyWith(isDefault: value);
-                await database.saveAddress(newAddress);
+                await checkoutCubit.saveAddress(newAddress);
               },
               title: const Text('Default shipping address'),
               controlAffinity: ListTileControlAffinity.leading,

@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:shooppyy/controllers/checkout/checkout_cubit.dart';
-import 'package:shooppyy/controllers/database_controller.dart';
+import 'package:shooppyy/controllers/product_details/product_details_cubit.dart';
 import 'package:shooppyy/utilities/args_model/add_shipping_address_args.dart';
 import 'package:shooppyy/utilities/routes.dart';
 import 'package:shooppyy/views/pages/bottom_nav_bar.dart';
@@ -10,7 +9,6 @@ import 'package:shooppyy/views/pages/checkout/add_shipping_Address_page.dart';
 import 'package:shooppyy/views/pages/checkout/checkout_page.dart';
 import 'package:shooppyy/views/pages/checkout/payment_methods_page.dart';
 import 'package:shooppyy/views/pages/checkout/shipping_addresses_page.dart';
-import 'package:shooppyy/views/pages/landing_page.dart';
 import 'package:shooppyy/views/pages/auth_page.dart';
 import 'package:shooppyy/views/pages/product_details.dart';
 
@@ -23,46 +21,45 @@ Route<dynamic> onGenerate(RouteSettings settings) {
       return CupertinoPageRoute(
           builder: (_) => const BottomNavBar(), settings: settings);
     case AppRoutes.productDetailsRoute:
-      final args = settings.arguments as Map<String, dynamic>;
-      final product = args['product'];
-      final database = args['database'];
+      final productId = settings.arguments as String;
       return CupertinoPageRoute(
-          builder: (_) => Provider<Database>.value(
-                value: database,
-                child: ProductDetails(
-                  product: product,
-                ),
+          builder: (_) => BlocProvider(
+                create: (context) {
+                  final cubit = ProductDetailsCubit();
+                  cubit.getProductDetails(productId);
+                  return cubit;
+                },
+                child: const ProductDetails(),
               ),
           settings: settings);
     case AppRoutes.checkoutPageRoute:
-      final database = settings.arguments as Database;
       return CupertinoPageRoute(
-          builder: (_) => Provider<Database>.value(
-                value: database,
-                child: BlocProvider(
-                  create: (context) => CheckoutCubit(),
-                  child: const CheckoutPage(),
-                ),
+          builder: (_) => BlocProvider(
+                create: (context) {
+                  final cubit = CheckoutCubit();
+                  cubit.getCheckoutData();
+                  return cubit;
+                },
+                child: const CheckoutPage(),
               ),
           settings: settings);
     case AppRoutes.addShippingAddressPage:
       final args = settings.arguments as AddShippingAddressArgs;
-      final database = args.database;
+      final checkoutCubit = args.checkoutCubit;
       final shippingAddress = args.shippingAddress;
       return CupertinoPageRoute(
-          builder: (_) => Provider<Database>.value(
-                value: database,
+          builder: (_) => BlocProvider.value(
+                value: checkoutCubit,
                 child: AddShippingAddressPage(
                   shippingAddress: shippingAddress,
                 ),
               ),
           settings: settings);
     case AppRoutes.shippingAddressesPage:
-      final database = settings.arguments as Database;
-
+      final checkoutCubit = settings.arguments as CheckoutCubit;
       return CupertinoPageRoute(
-          builder: (_) => Provider<Database>.value(
-                value: database,
+          builder: (_) => BlocProvider.value(
+                value: checkoutCubit,
                 child: const ShippingAddressesPage(),
               ),
           settings: settings);
@@ -77,9 +74,8 @@ Route<dynamic> onGenerate(RouteSettings settings) {
           child: const PaymentMethodsPage(),
         ),
       );
-    case AppRoutes.landingPageRoute:
     default:
       return CupertinoPageRoute(
-          builder: (_) => const LandingPage(), settings: settings);
+          builder: (_) => const AuthPage(), settings: settings);
   }
 }

@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shooppyy/controllers/database_controller.dart';
+import 'package:shooppyy/controllers/checkout/checkout_cubit.dart';
 import 'package:shooppyy/models/shipping_address.dart';
 import 'package:shooppyy/utilities/routes.dart';
 
 class ShippingAddressComponent extends StatelessWidget {
-  const ShippingAddressComponent({super.key, required this.shippingAddress});
+  const ShippingAddressComponent({
+    super.key,
+    required this.shippingAddress,
+    required this.checkoutCubit,
+  });
+
   final ShippingAddress shippingAddress;
+  final CheckoutCubit checkoutCubit;
 
   @override
   Widget build(BuildContext context) {
-    final database = Provider.of<Database>(context);
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
@@ -31,7 +35,7 @@ class ShippingAddressComponent extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).pushNamed(
                         AppRoutes.shippingAddressesPage,
-                        arguments: database);
+                        arguments: checkoutCubit);
                   },
                   child: Text(
                     'Change',

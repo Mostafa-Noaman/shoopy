@@ -12,7 +12,7 @@ class StripeServices {
     try {
       final clientSecret = await _createPaymentIntent(amount, currency);
       if (clientSecret == null) return;
-      Stripe.instance.initPaymentSheet(
+      await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
           paymentIntentClientSecret: clientSecret,
           merchantDisplayName: 'Shooppy',

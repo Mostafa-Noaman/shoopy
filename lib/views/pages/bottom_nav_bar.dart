@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:shooppyy/controllers/cart/cart_cubit.dart';
+import 'package:shooppyy/controllers/home/home_cubit.dart';
 import 'package:shooppyy/views/pages/cart_page.dart';
 import 'package:shooppyy/views/pages/home_page.dart';
+import 'package:shooppyy/views/pages/profile_page.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -16,11 +20,25 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   List<Widget> _buildScreens() {
     return [
-      const HomePage(),
+      BlocProvider(
+        create: (context) {
+          final cubit = HomeCubit();
+          cubit.getHomeContent();
+          return cubit;
+        },
+        child: const HomePage(),
+      ),
       Container(),
-      const CartPage(),
+      BlocProvider(
+        create: (context) {
+          final cubit = CartCubit();
+          cubit.getCartItems();
+          return cubit;
+        },
+        child: const CartPage(),
+      ),
       Container(),
-      Container(),
+      const ProfilePage(),
     ];
   }
 
@@ -29,31 +47,31 @@ class _BottomNavBarState extends State<BottomNavBar> {
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.home),
         title: ("Home"),
-        activeColorPrimary: CupertinoColors.activeBlue,
+        activeColorPrimary: CupertinoColors.destructiveRed,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.bag),
         title: ("Shop"),
-        activeColorPrimary: CupertinoColors.activeBlue,
+        activeColorPrimary: CupertinoColors.destructiveRed,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.shopping_cart),
         title: ("Cart"),
-        activeColorPrimary: CupertinoColors.activeBlue,
+        activeColorPrimary: CupertinoColors.destructiveRed,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.heart),
         title: ("Favorite"),
-        activeColorPrimary: CupertinoColors.activeBlue,
+        activeColorPrimary: CupertinoColors.destructiveRed,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.profile_circled),
-        title: ("Account"),
-        activeColorPrimary: CupertinoColors.activeBlue,
+        title: ("Profile"),
+        activeColorPrimary: CupertinoColors.destructiveRed,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
     ];
@@ -68,11 +86,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
         screens: _buildScreens(),
         items: _navBarsItems(),
         handleAndroidBackButtonPress: true,
-        // Default is true.
+// Default is true.
         resizeToAvoidBottomInset: true,
-        // This needs to be true if you want to move up the screen on a non-scrollable screen when keyboard appears. Default is true.
+// This needs to be true if you want to move up the screen on a non-scrollable screen when keyboard appears. Default is true.
         stateManagement: true,
-        // Default is true.
+// Default is true.
         hideNavigationBarWhenKeyboardAppears: true,
         popBehaviorOnSelectedNavBarItemPress: PopBehavior.all,
         padding: const EdgeInsets.only(top: 8),
@@ -80,12 +98,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
         isVisible: true,
         animationSettings: const NavBarAnimationSettings(
           navBarItemAnimation: ItemAnimationSettings(
-            // Navigation Bar's items animation properties.
+// Navigation Bar's items animation properties.
             duration: Duration(milliseconds: 400),
             curve: Curves.ease,
           ),
           screenTransitionAnimation: ScreenTransitionAnimationSettings(
-            // Screen transition animation on change of selected tab.
+// Screen transition animation on change of selected tab.
             animateTabTransition: true,
             duration: Duration(milliseconds: 200),
             screenTransitionAnimationType: ScreenTransitionAnimationType.fadeIn,

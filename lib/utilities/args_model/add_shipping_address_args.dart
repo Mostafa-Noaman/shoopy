@@ -1,9 +1,9 @@
-import 'package:shooppyy/controllers/database_controller.dart';
+import 'package:shooppyy/controllers/checkout/checkout_cubit.dart';
 import 'package:shooppyy/models/shipping_address.dart';
 
 class AddShippingAddressArgs {
-  final Database database;
+  final CheckoutCubit checkoutCubit;
   final ShippingAddress? shippingAddress;
 
-  AddShippingAddressArgs({required this.database, this.shippingAddress});
+  AddShippingAddressArgs({required this.checkoutCubit, this.shippingAddress});
 }
